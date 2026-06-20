@@ -12,7 +12,7 @@ const Tasks = ({
   const [currentPage, setCurrentPage] =
     useState(1);
 
-  const tasksPerPage = 10;
+  const [tasksPerPage, setTasksPerPage] = useState(5);
 
   const indexOfLastTask =
     currentPage * tasksPerPage;
@@ -51,7 +51,23 @@ const Tasks = ({
     <MainLayout>
 
       <h1>All Tasks</h1>
+      
+<div className="page-size">
+  <label>Tasks Per Page: </label>
 
+  <select
+    value={tasksPerPage}
+    onChange={(e) => {
+      setTasksPerPage(Number(e.target.value));
+      setCurrentPage(1);
+    }}
+  >
+    <option value={5}>5</option>
+    <option value={10}>10</option>
+    <option value={25}>25</option>
+    <option value={50}>50</option>
+  </select>
+</div>
       <TaskTable
         tasks={currentTasks}
         deleteTask={deleteTask}

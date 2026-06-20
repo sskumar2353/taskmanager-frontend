@@ -2,123 +2,109 @@ import { useState } from "react";
 import "../../styles/addtaskform.css";
 
 const AddTaskForm = ({ addTask }) => {
-
   const [title, setTitle] = useState("");
-
-  const [description, setDescription] =
-    useState("");
-
-  const [priority, setPriority] =
-    useState("Medium");
-
-  const [deadline, setDeadline] =
-    useState("");
-
-  const [status, setStatus] =
-    useState("Pending");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("Medium");
+  const [deadline, setDeadline] = useState("");
+  const [status, setStatus] = useState("Pending");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
+
+    if (!title.trim()) {
+      setError("Task Title is required");
+      return;
+    }
+
+    if (!deadline) {
+      setError("Deadline is required");
+      return;
+    }
+
+    setError("");
 
     const newTask = {
       title,
       description,
       priority,
       deadline,
-      status
+      status,
     };
 
     addTask(newTask);
+
     setTitle("");
-setDescription("");
-setPriority("Medium");
-setDeadline("");
-setStatus("Pending");
-
-const handleSubmit = (e) => {
-
-  e.preventDefault();
-
-  const newTask = {
-    title,
-    description,
-    priority,
-    deadline,
-    status
-  };
-
-  addTask(newTask);
-
-  setTitle("");
-  setDescription("");
-  setPriority("Medium");
-  setDeadline("");
-  setStatus("Pending");
-
-};
+    setDescription("");
+    setPriority("Medium");
+    setDeadline("");
+    setStatus("Pending");
   };
 
   return (
+    <>
+      {error && (
+        <p className="error-message">
+          {error}
+        </p>
+      )}
 
-    <form
-  className="task-form"
-  onSubmit={handleSubmit}
->
-
-      <input
-        type="text"
-        placeholder="Task Title"
-        value={title}
-        onChange={(e) =>
-          setTitle(e.target.value)
-        }
-      />
-
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) =>
-          setDescription(e.target.value)
-        }
-      />
-
-      <select
-        value={priority}
-        onChange={(e) =>
-          setPriority(e.target.value)
-        }
+      <form
+        className="task-form"
+        onSubmit={handleSubmit}
       >
-        <option>High</option>
-        <option>Medium</option>
-        <option>Low</option>
-      </select>
+        <input
+          type="text"
+          placeholder="Task Title"
+          value={title}
+          onChange={(e) =>
+            setTitle(e.target.value)
+          }
+        />
 
-      <input
-        type="date"
-        value={deadline}
-        onChange={(e) =>
-          setDeadline(e.target.value)
-        }
-      />
+        <textarea
+          placeholder="Description"
+          value={description}
+          onChange={(e) =>
+            setDescription(e.target.value)
+          }
+        />
 
-      <select
-        value={status}
-        onChange={(e) =>
-          setStatus(e.target.value)
-        }
-      >
-        <option>Pending</option>
-        <option>In Progress</option>
-        <option>Completed</option>
-      </select>
+        <select
+          value={priority}
+          onChange={(e) =>
+            setPriority(e.target.value)
+          }
+        >
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
 
-      <button type="submit">
-        Add Task
-      </button>
+        <input
+          type="date"
+          value={deadline}
+          onChange={(e) =>
+            setDeadline(e.target.value)
+          }
+        />
 
-    </form>
+        <select
+          value={status}
+          onChange={(e) =>
+            setStatus(e.target.value)
+          }
+        >
+          <option>Pending</option>
+          <option>In Progress</option>
+          <option>Completed</option>
+        </select>
 
+        <button type="submit">
+          Add Task
+        </button>
+      </form>
+    </>
   );
 };
 

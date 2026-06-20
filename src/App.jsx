@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import AppRoutes from "./routes/AppRoutes";
 
+
 import {
   getTasks,
   createTask,
@@ -22,30 +23,74 @@ function App() {
   const [selectedTask, setSelectedTask] =
     useState(null);
 
-  useEffect(() => {
+useEffect(() => {
+
+  const token =
+    localStorage.getItem(
+      "token"
+    );
+
+  if (token) {
     fetchTasks();
-  }, []);
+  }
+
+}, []);
 
   const fetchTasks = async () => {
 
-    try {
+  const token =
+    localStorage.getItem(
+      "token"
+    );
 
-      const response =
-        await getTasks();
+  if (!token) {
+    return;
+  }
 
-      setTasks(response.data);
+  try {
 
-    } catch (error) {
+    const response =
+      await getTasks();
 
-      console.error(error);
+    console.log(
+      "API Response:",
+      response.data
+    );
 
-      toast.error(
-        "Failed to fetch tasks"
+    setTasks(
+      Array.isArray(
+        response.data
+      )
+        ? response.data
+        : []
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    if (
+      error.response?.status === 401
+    ) {
+
+      localStorage.removeItem(
+        "token"
       );
 
+      localStorage.removeItem(
+        "user"
+      );
+
+      return;
     }
 
-  };
+    toast.error(
+      "Failed to fetch tasks"
+    );
+
+  }
+
+};
 
   const addTask = async (newTask) => {
 

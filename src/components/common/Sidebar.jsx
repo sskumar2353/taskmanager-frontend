@@ -18,9 +18,9 @@ const Sidebar = () => {
           <Link to="/add-task">Add Task</Link>
         </li>
 
-        <li>
+        {/* <li>
           <Link to="/edit-task">Edit Task</Link>
-        </li>
+        </li> */}
 
       </ul>
     </aside>

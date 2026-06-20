@@ -4,6 +4,11 @@ import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Tasks";
 import AddTask from "../pages/AddTask";
 import EditTask from "../pages/EditTask";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
 
 const AppRoutes = ({
   tasks,
@@ -16,38 +21,52 @@ const AppRoutes = ({
 
   return (
     <Routes>
-
       <Route
-        path="/"
-        element={
-          <Dashboard
-            tasks={tasks}
-            deleteTask={deleteTask}
-            setSelectedTask={setSelectedTask}
-          />
-        }
+  path="/login"
+  element={<Login />}
+/>
+
+<Route
+  path="/register"
+  element={<Register />}
+/>
+      <Route
+  path="/"
+  element={
+    <ProtectedRoute>
+      <Dashboard
+        tasks={tasks}
+        deleteTask={deleteTask}
+        setSelectedTask={setSelectedTask}
       />
+    </ProtectedRoute>
+  }
+/>
 
       <Route
-        path="/tasks"
-        element={
-          <Tasks
-            tasks={tasks}
-            deleteTask={deleteTask}
-            setSelectedTask={setSelectedTask}
-          />
-        }
+  path="/tasks"
+  element={
+    <ProtectedRoute>
+      <Tasks
+        tasks={tasks}
+        deleteTask={deleteTask}
+        setSelectedTask={setSelectedTask}
       />
+    </ProtectedRoute>
+  }
+/>
 
-      <Route
+     <Route
   path="/add-task"
   element={
-    <AddTask
-      tasks={tasks}
-      addTask={addTask}
-      deleteTask={deleteTask}
-      setSelectedTask={setSelectedTask}
-    />
+    <ProtectedRoute>
+      <AddTask
+        tasks={tasks}
+        addTask={addTask}
+        deleteTask={deleteTask}
+        setSelectedTask={setSelectedTask}
+      />
+    </ProtectedRoute>
   }
 />
 
@@ -60,6 +79,10 @@ const AppRoutes = ({
     />
   }
 />
+
+<Route path="/forgot-password" element={ <ForgotPassword /> } />
+
+<Route path="/reset-password" element={ <ResetPassword /> } />
 
     </Routes>
   );
